@@ -6,6 +6,7 @@ const cors = require('cors')
 //POST data arrives as raw JSON, so express parses it and puts it in req.body
 app.use(cors())
 app.use(express.json())
+app.use(express.static('dist'))
 
 //this is a function
 //body is the name of the placeholder. (req) is called when building a log line. You return what appears where :body should go
