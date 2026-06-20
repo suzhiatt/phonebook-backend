@@ -1,0 +1,20 @@
+GET http://localhost:3001/api/persons
+###
+DELETE http://localhost:3001/api/persons/2
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+     "name": "Susie Hiatt", 
+     "number": "336-456-6606" 
+}
+###
+
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Arto Hellas",
+    "number": "336-456-6606"
+}
