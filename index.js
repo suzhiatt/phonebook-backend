@@ -2,6 +2,8 @@ const express = require('express')
 const app = express()
 const morgan = require('morgan')
 const cors = require('cors')
+const mongoose = require('mongoose')
+mongoose.connect(url, { family: 4 })
 
 //POST data arrives as raw JSON, so express parses it and puts it in req.body
 app.use(cors())
@@ -14,6 +16,13 @@ morgan.token('body', (req) => {
   //is this a post? Return the data as a string, or else return nothing extra
   return req.method === 'POST' ? JSON.stringify(req.body) : ''
 })
+
+const phonebookSchema = new mongoose.Schema({
+  name: String,
+  number: String,
+})
+
+const Pbook = mongoose.model('Pbook', phonebookSchema)
 
 //morgan(tiny) only knows Morgan's built in tokens. To use my token, the string must include body
 //used a wrapper because the assignment wants body data only on post
@@ -56,8 +65,14 @@ app.get('/info', (request, response) => {
   )
 })
 
+//ask mongoose for all documents, then send them as json
 app.get('/api/persons', (request, response) => {
-  response.json(phonebook)
+  //find: gets all documents from database
+  Pbook.find({}).then(result => {
+    //sends them to the browser/REST client
+      response.json(result)
+      // console.log(pbook.name, pbook.number)
+  })
 })
 
 app.get('/api/persons/:id', (request, response) => {
