@@ -29,9 +29,11 @@ app.use((req, res, next) => {
 })
 
 app.get('/info', (request, response) => {
-  response.send(
-    `Phonebook has info for ${phonebook.length} people\n\n${new Date()}`
-  )
+  Pbook.countDocuments({}).then(count => {
+    response.send(
+      `Phonebook has info for ${count} people\n\n${new Date()}`
+    )
+  })
 })
 
 //ask mongoose for all documents, then send them as json

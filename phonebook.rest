@@ -18,3 +18,5 @@ Content-Type: application/json
     "name": "Arto Hellas",
     "number": "336-456-6606"
 }
+###
+GET http://localhost:3001/api/persons/banana
