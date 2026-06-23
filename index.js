@@ -1,9 +1,9 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
 const cors = require('cors')
-const mongoose = require('mongoose')
-mongoose.connect(url, { family: 4 })
+const Pbook = require('./models/phonebook')
 
 //POST data arrives as raw JSON, so express parses it and puts it in req.body
 app.use(cors())
@@ -16,13 +16,6 @@ morgan.token('body', (req) => {
   //is this a post? Return the data as a string, or else return nothing extra
   return req.method === 'POST' ? JSON.stringify(req.body) : ''
 })
-
-const phonebookSchema = new mongoose.Schema({
-  name: String,
-  number: String,
-})
-
-const Pbook = mongoose.model('Pbook', phonebookSchema)
 
 //morgan(tiny) only knows Morgan's built in tokens. To use my token, the string must include body
 //used a wrapper because the assignment wants body data only on post
