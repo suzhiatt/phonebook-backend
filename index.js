@@ -51,9 +51,9 @@ app.get('/api/persons/:id', (request, response, next) => {
   Pbook.findById(request.params.id).then(person => {
     if(person) {response.json(person)}
   else {
-    response.status(404).json({ error: 'person not found' }).end()
-  }})
-  .catch(error => next(error))
+      response.status(404).json({ error: 'person not found' }).end()
+    }})
+    .catch(error => next(error))
 })
   
 app.post('/api/persons', (request, response, next) => {
@@ -62,11 +62,11 @@ app.post('/api/persons', (request, response, next) => {
     name: body.name, 
     number: body.number, 
   })
-    person.save()
+  person.save()
     .then(savedPerson => {
       response.json(savedPerson)
-        console.log(`added ${body.name} number ${body.number}`)       
-})
+      console.log(`added ${body.name} number ${body.number}`)       
+    })
     .catch(error => next(error))
 })
 
@@ -80,8 +80,8 @@ app.patch('/api/persons/:id', (request, response, next) => {
         return response.status(404).json({ error: 'person not found' })
       }
       response.json(updatedPerson)
-  })
-  .catch(error => next(error))
+    })
+    .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response) => {
@@ -93,7 +93,7 @@ app.delete('/api/persons/:id', (request, response) => {
       response.status(404).json({ error: 'person not found' })
     }}
   )
-  .catch(error => next(error))
+    .catch(error => next(error))
 })
 
 const errorHandler = (error, request, response, next) => {
