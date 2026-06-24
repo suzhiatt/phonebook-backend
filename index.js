@@ -44,6 +44,7 @@ app.get('/api/persons', (request, response) => {
       response.json(result)
       // console.log(pbook.name, pbook.number)
   })
+  .catch(error => next(error))
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
@@ -57,15 +58,6 @@ app.get('/api/persons/:id', (request, response, next) => {
   
 app.post('/api/persons', (request, response, next) => {
   const body = request.body
-    Pbook.findOne({name: body.name}).then(existing => {
-      if (existing) {
-          existing.number = body.number, 
-          existing.save().then((updated) => {
-            response.json(updated)
-          })
-          .catch(error => next(error))
-      }
-      else { 
   const person = new Pbook({ 
     name: body.name, 
     number: body.number, 
@@ -76,8 +68,20 @@ app.post('/api/persons', (request, response, next) => {
         console.log(`added ${body.name} number ${body.number}`)       
 })
     .catch(error => next(error))
-}
 })
+
+app.patch('/api/persons/:id', (request, response, next) => {
+  Pbook.findByIdAndUpdate(
+    request.params.id,
+    {number: request.body.number },
+    {new: true, runValidators: true})
+    .then((updatedPerson) => {
+      if (!updatedPerson) {
+        return response.status(404).json({ error: 'person not found' })
+      }
+      response.json(updatedPerson)
+  })
+  .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response) => {
