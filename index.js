@@ -57,9 +57,6 @@ app.get('/api/persons/:id', (request, response, next) => {
   
 app.post('/api/persons', (request, response, next) => {
   const body = request.body
-    if (body.number === null || body.number ===undefined || body.number ==='') {
-      return response.status(400).json({ error: 'number not found' })
-    }
     Pbook.findOne({name: body.name}).then(existing => {
       if (existing) {
           existing.number = body.number, 
