@@ -23,8 +23,15 @@ mongoose.connect(url, { family: 4 })
     },
     number: {
         type: String,
-        required: true
-    }
+        minlength: 8,
+        required: true,
+        validate: {
+          validator: function(value) {
+            return /^\d{2,3}-\d+$/.test(value)
+          },
+          message: "Please enter valid number with a dash after the 2 or 3 digits"
+        },
+    },
   })
 
   //every time one of these docs is converted to JSON, run this to change what gets sent
