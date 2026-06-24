@@ -15,8 +15,16 @@ mongoose.connect(url, { family: 4 })
   })
 
   const phonebookSchema = new mongoose.Schema({
-    name: String,
-    number: String,
+    name: {
+        type: String,
+        minlength: 3,
+        required: true,
+
+    },
+    number: {
+        type: String,
+        required: true
+    }
   })
 
   //every time one of these docs is converted to JSON, run this to change what gets sent

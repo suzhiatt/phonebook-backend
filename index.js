@@ -55,12 +55,9 @@ app.get('/api/persons/:id', (request, response, next) => {
   .catch(error => next(error))
 })
   
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
   const body = request.body
-    if(body.name === null || body.name ===undefined || body.name ==='') {
-      return response.status(400).json({ error: 'person not found' })
-    }
-    else if (body.number === null || body.number ===undefined || body.number ==='') {
+    if (body.number === null || body.number ===undefined || body.number ==='') {
       return response.status(400).json({ error: 'number not found' })
     }
     Pbook.findOne({name: body.name}).then(existing => {
@@ -69,18 +66,21 @@ app.post('/api/persons', (request, response) => {
           existing.save().then((updated) => {
             response.json(updated)
           })
+          .catch(error => next(error))
       }
       else { 
-
-      
   const person = new Pbook({ 
     name: body.name, 
     number: body.number, 
   })
-    person.save().then(savedPerson => {
+    person.save()
+    .then(savedPerson => {
       response.json(savedPerson)
-        console.log(`added ${body.name} number ${body.number}`)
-})}})
+        console.log(`added ${body.name} number ${body.number}`)       
+})
+    .catch(error => next(error))
+}
+})
 })
 
 app.delete('/api/persons/:id', (request, response) => {
@@ -99,6 +99,8 @@ const errorHandler = (error, request, response, next) => {
   console.error(error.message)
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id'})
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message})
   }
   next(error)
 }
